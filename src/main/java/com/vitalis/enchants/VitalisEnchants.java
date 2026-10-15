@@ -1,0 +1,64 @@
+package com.vitalis.enchants;
+
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
+
+/**
+ * VitalisEnchants v1.0.0 - Paper/Purpur 1.21.11.
+ * Custom enchantments, OP-only distribution via /venchant.
+ * Storage: PersistentDataContainer + lore line (PDC is the truth).
+ */
+public class VitalisEnchants extends JavaPlugin {
+    private final EnchantsConfig cfg = new EnchantsConfig();
+    private EnchantApi api;
+    private final Map<String, EnchantDef> registry = new LinkedHashMap<>();
+
+    @Override
+    public void onEnable() {
+        cfg.load(this);
+        api = new EnchantApi(this);
+        Set<String> melee = Set.of("SWORDS", "AXES");
+        registry.put("storm", new EnchantDef("storm", "Гроза", 3, melee));
+        registry.put("vampire", new EnchantDef("vampire", "Вампир", 3, melee));
+        registry.put("scholar", new EnchantDef("scholar", "Учёный", 3, melee));
+        registry.put("owl", new EnchantDef("owl", "Сова", 1, Set.of("HELMETS")));
+        registry.put("drill", new EnchantDef("drill", "Бур", 1, Set.of("PICKAXES")));
+
+        VEnchantCommand cmd = new VEnchantCommand(this);
+        try {
+            var pc = getCommand("venchant");
+            if (pc != null) {
+                pc.setExecutor(cmd);
+                pc.setTabCompleter(cmd);
+            } else {
+                getLogger().warning("/venchant not in plugin.yml, command disabled.");
+            }
+        } catch (Exception e) {
+            getLogger().warning("Command register failed: " + e.getMessage());
+        }
+
+        getServer().getPluginManager().registerEvents(new CombatListener(this), this);
+        getServer().getPluginManager().registerEvents(new DeathListener(this), this);
+        getServer().getPluginManager().registerEvents(new DrillListener(this), this);
+        getServer().getScheduler().runTaskTimer(this, new ArmorTask(this), 100L, 100L);
+
+        getLogger().info("VitalisEnchants enabled: " + registry.size() + " enchantments.");
+    }
+
+    public EnchantsConfig cfg() { return cfg; }
+    public EnchantApi api() { return api; }
+    public Map<String, EnchantDef> registry() { return registry; }
+
+    /** Material group check (suffix-based, version-proof). */
+    public static boolean fits(EnchantDef def, String mat) {
+        if (def.materials.contains("SWORDS") || def.materials.contains("AXES")) {
+            if (EnchantDef.isMelee(mat)) return true;
+        }
+        if (def.materials.contains("HELMETS") && EnchantDef.isHelmet(mat)) return true;
+        if (def.materials.contains("PICKAXES") && mat.endsWith("_PICKAXE")) return true;
+        return def.materials.contains(mat);
+    }
+}
