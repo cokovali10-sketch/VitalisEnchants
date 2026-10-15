@@ -22,6 +22,14 @@ class EnchantMathTest {
     }
 
     @Test
+    void vampireHealFractions() {
+        // heal = damage * (mult - 1): must stay positive on every level
+        assertEquals(0.10, EnchantMath.mult(1.10, 0.10, 1) - 1.0, 1e-9);
+        assertEquals(0.20, EnchantMath.mult(1.10, 0.10, 2) - 1.0, 1e-9);
+        assertEquals(0.30, EnchantMath.mult(1.10, 0.10, 3) - 1.0, 1e-9);
+    }
+
+    @Test
     void clampAndRoman() {
         assertEquals(1, EnchantMath.clampLevel(-5, 3));
         assertEquals(3, EnchantMath.clampLevel(99, 3));

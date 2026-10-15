@@ -27,7 +27,7 @@ public class EnchantsConfig {
         Nums n = new Nums();
         switch (id) {
             case "storm" -> { n.maxLevel = 3; n.chanceBase = 0.10; n.chancePerLevel = 0.10; }
-            case "vampire" -> { n.maxLevel = 3; n.chanceBase = 1.0; n.chancePerLevel = 0; n.multBase = 0.10; n.multPerLevel = 0.10; }
+            case "vampire" -> { n.maxLevel = 3; n.chanceBase = 1.0; n.chancePerLevel = 0; n.multBase = 1.10; n.multPerLevel = 0.10; }
             case "scholar" -> { n.maxLevel = 3; n.multBase = 1.5; n.multPerLevel = 0.5; }
             case "owl" -> { n.maxLevel = 1; }
             case "drill" -> { n.maxLevel = 1; }

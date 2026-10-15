@@ -1,0 +1,23 @@
+# VitalisEnchants numbers. Missing keys = compiled defaults, never breaks.
+enchants:
+  storm:
+    enabled: true
+    max-level: 3
+    chance-base: 0.10
+    chance-per-level: 0.10
+  vampire:
+    enabled: true
+    max-level: 3
+    mult-base: 1.10
+    mult-per-level: 0.10
+  scholar:
+    enabled: true
+    max-level: 3
+    mult-base: 1.5
+    mult-per-level: 0.5
+  owl:
+    enabled: true
+    max-level: 1
+  drill:
+    enabled: true
+    max-level: 1
