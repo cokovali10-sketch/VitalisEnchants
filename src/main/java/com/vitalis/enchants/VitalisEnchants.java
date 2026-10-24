@@ -20,12 +20,33 @@ public class VitalisEnchants extends JavaPlugin {
     public void onEnable() {
         cfg.load(this);
         api = new EnchantApi(this);
-        Set<String> melee = Set.of("SWORDS", "AXES");
+        Set<String> melee = Set.of("MELEE");
+        Set<String> helmets = Set.of("HELMETS");
+        Set<String> chests = Set.of("CHESTPLATES");
+        Set<String> boots = Set.of("BOOTS");
+        Set<String> picks = Set.of("PICKAXES");
+        Set<String> axes = Set.of("AXES");
+        Set<String> bows = Set.of("BOWS");
+
         registry.put("storm", new EnchantDef("storm", "Гроза", 3, melee));
         registry.put("vampire", new EnchantDef("vampire", "Вампир", 3, melee));
         registry.put("scholar", new EnchantDef("scholar", "Учёный", 3, melee));
-        registry.put("owl", new EnchantDef("owl", "Сова", 1, Set.of("HELMETS")));
-        registry.put("drill", new EnchantDef("drill", "Бур", 1, Set.of("PICKAXES")));
+        registry.put("frost", new EnchantDef("frost", "Мороз", 3, melee));
+        registry.put("venom", new EnchantDef("venom", "Яд", 3, melee));
+        registry.put("berserk", new EnchantDef("berserk", "Ярость", 3, melee));
+
+        registry.put("owl", new EnchantDef("owl", "Сова", 1, helmets));
+        registry.put("gills", new EnchantDef("gills", "Жабры", 1, helmets));
+        registry.put("vigor", new EnchantDef("vigor", "Стойкость", 3, chests));
+        registry.put("spring", new EnchantDef("spring", "Пружина", 3, boots));
+        registry.put("feather", new EnchantDef("feather", "Пёрышко", 1, boots));
+
+        registry.put("drill", new EnchantDef("drill", "Бур", 1, picks));
+        registry.put("haste", new EnchantDef("haste", "Спешка", 3, picks));
+        registry.put("autosmelt", new EnchantDef("autosmelt", "Плавка", 1, picks));
+        registry.put("lumberjack", new EnchantDef("lumberjack", "Дровосек", 1, axes));
+
+        registry.put("hunter", new EnchantDef("hunter", "Охотник", 3, bows));
 
         VEnchantCommand cmd = new VEnchantCommand(this);
         try {
@@ -43,6 +64,8 @@ public class VitalisEnchants extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new CombatListener(this), this);
         getServer().getPluginManager().registerEvents(new DeathListener(this), this);
         getServer().getPluginManager().registerEvents(new DrillListener(this), this);
+        getServer().getPluginManager().registerEvents(new FallListener(this), this);
+        getServer().getPluginManager().registerEvents(new ToolListener(this), this);
         getServer().getScheduler().runTaskTimer(this, new ArmorTask(this), 100L, 100L);
 
         getLogger().info("VitalisEnchants enabled: " + registry.size() + " enchantments.");
@@ -52,13 +75,8 @@ public class VitalisEnchants extends JavaPlugin {
     public EnchantApi api() { return api; }
     public Map<String, EnchantDef> registry() { return registry; }
 
-    /** Material group check (suffix-based, version-proof). */
+    /** Material group check, delegated to the pure EnchantDef logic. */
     public static boolean fits(EnchantDef def, String mat) {
-        if (def.materials.contains("SWORDS") || def.materials.contains("AXES")) {
-            if (EnchantDef.isMelee(mat)) return true;
-        }
-        if (def.materials.contains("HELMETS") && EnchantDef.isHelmet(mat)) return true;
-        if (def.materials.contains("PICKAXES") && mat.endsWith("_PICKAXE")) return true;
-        return def.materials.contains(mat);
+        return def != null && def.fits(mat);
     }
 }

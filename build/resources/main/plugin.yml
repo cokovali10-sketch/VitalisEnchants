@@ -1,0 +1,16 @@
+name: VitalisEnchants
+version: 1.1.0
+main: com.vitalis.enchants.VitalisEnchants
+api-version: "1.21"
+author: Vitalis
+description: "Heaven custom enchantments (OP-only distribution). Purpur/Paper 1.21.11."
+depend: []
+commands:
+  venchant:
+    description: "Give/list/remove custom enchantments (OP only)."
+    usage: "/venchant give <player> <id> [level]|/venchant list|/venchant remove <player> <id>"
+    aliases: [vench]
+permissions:
+  vitalisenchants.admin:
+    description: "Manage custom enchantments."
+    default: op

@@ -20,6 +20,12 @@ public final class EnchantMath {
         return Math.max(1, Math.min(Math.max(1, cap), level));
     }
 
+    /** Effect duration in ticks grows per level, never below 20 ticks. */
+    public static int duration(double base, double perLevel, int level) {
+        if (level <= 0) return 0;
+        return (int) Math.max(20, Math.round(base + perLevel * (level - 1)));
+    }
+
     private static final String[] ROMAN = {
         "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"};
 

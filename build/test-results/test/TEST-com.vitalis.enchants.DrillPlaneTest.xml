@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.vitalis.enchants.DrillPlaneTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-17T12:01:41.591Z" hostname="DESKTOP-VA18UL4" time="0.024">
+  <properties/>
+  <testcase name="fallbackWhenNoRay()" classname="com.vitalis.enchants.DrillPlaneTest" time="0.02"/>
+  <testcase name="horizontalPlane()" classname="com.vitalis.enchants.DrillPlaneTest" time="0.001"/>
+  <testcase name="wallPlanes()" classname="com.vitalis.enchants.DrillPlaneTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

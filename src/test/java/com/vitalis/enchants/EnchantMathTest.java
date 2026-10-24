@@ -37,4 +37,12 @@ class EnchantMathTest {
         assertEquals("III", EnchantMath.roman(3));
         assertEquals("X", EnchantMath.roman(10));
     }
+
+    @Test
+    void durationScalesWithFloor() {
+        assertEquals(40, EnchantMath.duration(40, 20, 1));
+        assertEquals(80, EnchantMath.duration(40, 20, 3));
+        assertEquals(0, EnchantMath.duration(40, 20, 0));
+        assertEquals(20, EnchantMath.duration(5, 0, 1));
+    }
 }

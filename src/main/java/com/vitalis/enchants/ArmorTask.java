@@ -5,8 +5,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-/** owl ("Сова"): night vision while a charmed helmet is worn. */
+/**
+ * Passive armor/tool enchants, refreshed every 5s (short, safe effects):
+ * owl (night vision), gills (water breathing), vigor (regeneration),
+ * spring (jump boost on boots), haste (mining haste while holding a pickaxe).
+ */
 public class ArmorTask implements Runnable {
+    private static final int TICKS = 300;
+
     private final VitalisEnchants plugin;
 
     public ArmorTask(VitalisEnchants plugin) {
@@ -15,18 +21,26 @@ public class ArmorTask implements Runnable {
 
     @Override
     public void run() {
-        var n = plugin.cfg().get("owl");
-        if (!n.enabled) return;
-        EnchantDef def = plugin.registry().get("owl");
-        if (def == null) return;
         for (Player p : plugin.getServer().getOnlinePlayers()) {
             try {
-                ItemStack helm = p.getInventory().getHelmet();
-                if (helm == null || helm.getType().isAir()) continue;
-                if (plugin.api().level(helm, "owl") <= 0) continue;
-                p.addPotionEffect(new PotionEffect(
-                        PotionEffectType.NIGHT_VISION, 300, 0, true, false, false));
+                passive(p, p.getInventory().getHelmet(), "owl", PotionEffectType.NIGHT_VISION, false);
+                passive(p, p.getInventory().getHelmet(), "gills", PotionEffectType.WATER_BREATHING, false);
+                passive(p, p.getInventory().getChestplate(), "vigor", PotionEffectType.REGENERATION, false);
+                passive(p, p.getInventory().getBoots(), "spring", PotionEffectType.JUMP_BOOST, true);
+                passive(p, p.getInventory().getItemInMainHand(), "haste", PotionEffectType.HASTE, true);
             } catch (Exception ignored) {}
         }
+    }
+
+    private void passive(Player p, ItemStack item, String id, PotionEffectType type, boolean ampByLevel) {
+        if (item == null || item.getType().isAir()) return;
+        EnchantDef def = plugin.registry().get(id);
+        if (def == null || !def.fits(item.getType().name())) return;
+        var n = plugin.cfg().get(id);
+        if (!n.enabled) return;
+        int lvl = plugin.api().level(item, id);
+        if (lvl <= 0) return;
+        int amp = ampByLevel ? Math.max(0, lvl - 1) : 0;
+        p.addPotionEffect(new PotionEffect(type, TICKS, amp, true, false, false));
     }
 }

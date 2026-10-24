@@ -1,5 +1,8 @@
 # VitalisEnchants numbers. Missing keys = compiled defaults, never breaks.
+# chance-base/пер-левел: шанс срабатывания (0..1). mult: множитель эффекта.
+# duration-base/пер-левел: длительность в тиках (20 тиков = 1 сек).
 enchants:
+  # --- Оружие (меч/топор) ---
   storm:
     enabled: true
     max-level: 3
@@ -15,9 +18,61 @@ enchants:
     max-level: 3
     mult-base: 1.5
     mult-per-level: 0.5
+  frost:
+    enabled: true
+    max-level: 3
+    chance-base: 0.25
+    chance-per-level: 0.10
+    duration-base: 40
+    duration-per-level: 20
+  venom:
+    enabled: true
+    max-level: 3
+    chance-base: 0.20
+    chance-per-level: 0.10
+    duration-base: 60
+    duration-per-level: 20
+  berserk:
+    enabled: true
+    max-level: 3
+    mult-base: 1.15
+    mult-per-level: 0.10
+  # --- Броня ---
   owl:
     enabled: true
     max-level: 1
+  gills:
+    enabled: true
+    max-level: 1
+  vigor:
+    enabled: true
+    max-level: 3
+  spring:
+    enabled: true
+    max-level: 3
+    mult-base: 1.0
+    mult-per-level: 0.5
+  feather:
+    enabled: true
+    max-level: 1
+  # --- Инструменты ---
   drill:
     enabled: true
     max-level: 1
+  haste:
+    enabled: true
+    max-level: 3
+    mult-base: 1.0
+    mult-per-level: 0.5
+  autosmelt:
+    enabled: true
+    max-level: 1
+  lumberjack:
+    enabled: true
+    max-level: 1
+  # --- Лук ---
+  hunter:
+    enabled: true
+    max-level: 3
+    mult-base: 1.20
+    mult-per-level: 0.10
